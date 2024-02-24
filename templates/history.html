@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carbon Footprint History</h1>
+    <table>
+        <tr>
+            <th>Electricity (kWh)</th>
+            <th>Transportation</th>
+            <th>Miles</th>
+            <th>Carbon Footprint (kg CO2)</th>
+        </tr>
+        {% for entry in entries %}
+            <tr>
+                <td>{{ entry.electricity }}</td>
+                <td>{{ entry.transportation }}</td>
+                <td>{{ entry.miles if entry.miles else 'N/A' }}</td>
+                <td>{{ entry.carbon_footprint }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <button onclick="window.location.href='{{ url_for('index') }}'">Go to Home Page</button>
+</body>
+</html>

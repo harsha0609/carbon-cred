@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        form {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carbon Footprint Tracker</h1>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{{ url_for('logout') }}">Logout</a></p>
+        <p><a href="{{ url_for('history') }}">View Carbon Footprint History</a></p>
+        
+        <h2>Calculate Carbon Footprint</h2>
+        <form action="{{ url_for('calculate') }}" method="post">
+            <label for="electricity">Electricity Usage (kWh):</label>
+            <input type="number" name="electricity" required step="0.01"><br>
+            
+            <label for="transportation">Transportation Method:</label>
+            <select name="transportation" required>
+                <option value="car">Car</option>
+                <option value="bus">Bus</option>
+                <option value="bike">Bike</option>
+            </select><br>
+
+            <label for="miles">Miles (if applicable):</label>
+            <input type="number" name="miles" step="0.01"><br>
+
+            <input type="submit" value="Calculate">
+        </form>
+    {% else %}
+        <p>Welcome! <a href="{{ url_for('login') }}">Login</a></p>
+        <!-- Add any other content for non-authenticated users -->
+    {% endif %}
+</body>
+</html>
