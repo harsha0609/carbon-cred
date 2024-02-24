@@ -27,6 +27,11 @@ class CarbonFootprint(db.Model):
     carbon_footprint = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+class FoodDonation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    food_description = db.Column(db.String(200), nullable=False)
+    donor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    donor = db.relationship('User', backref='donations', lazy=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -97,6 +102,25 @@ def calculate():
     flash('Carbon footprint calculated and saved successfully!', 'success')
     return redirect(url_for('result'))
 
+
+
+# Donate Food Page (requires login)
+@app.route('/donate', methods=['GET', 'POST'])
+@login_required
+def donate():
+    if request.method == 'POST':
+        food_description = request.form['food_description']
+
+        with app.app_context():
+            new_donation = FoodDonation(food_description=food_description, donor=current_user)
+            db.session.add(new_donation)
+            db.session.commit()
+
+        flash('Food donation added successfully!', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('donate.html')
+
 @app.route('/result')
 @login_required
 def result():
@@ -110,6 +134,15 @@ def history():
         carbon_entries = CarbonFootprint.query.filter_by(user=current_user).all()
 
     return render_template('history.html', entries=carbon_entries)
+
+# Dashboard (requires login)
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    carbon_footprints = CarbonFootprint.query.filter_by(user=current_user).all()
+    donations = FoodDonation.query.filter_by(donor=current_user).all()
+    total_carbon_footprint = sum([entry.carbon_footprint for entry in carbon_footprints])
+    return render_template('dashboard.html', carbon_footprints=carbon_footprints, donations=donations, total_carbon_footprint=total_carbon_footprint)
 
 
 @app.route('/register', methods=['GET', 'POST'])

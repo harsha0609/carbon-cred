@@ -1,0 +1,107 @@
+<!-- templates/dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Add your own styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #007BFF;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <h2>Carbon Footprint</h2>
+    <ul>
+        {% for entry in carbon_footprints %}
+            <li>Electricity: {{ entry.electricity }} kWh, Transportation: {{ entry.transportation }}, Miles: {{ entry.miles }}, Carbon Footprint: {{ entry.carbon_footprint }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total Carbon Footprint: {{ total_carbon_footprint }} kg CO2</p>
+
+    <h2>Food Donations</h2>
+    <ul>
+        {% for donation in donations %}
+            <li>{{ donation.food_description }}</li>
+        {% endfor %}
+    </ul>
+
+    <div class="chart-container">
+        <canvas id="carbonChart"></canvas>
+    </div>
+
+    <p><a href="{{ url_for('donate') }}">Donate Food</a></p>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+
+    <!-- JavaScript to create a simple line chart -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('carbonChart').getContext('2d');
+            var labels = [{% for entry in carbon_footprints %}'{{ entry.date }}',{% endfor %}];
+            var data = [{% for entry in carbon_footprints %}{{ entry.carbon_footprint }},{% endfor %}];
+
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Carbon Footprint History',
+                        data: data,
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom'
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
