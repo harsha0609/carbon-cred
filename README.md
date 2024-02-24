@@ -6,4 +6,5 @@ Flask python
 
 #  steps to run
 pip3 install flask flask_sqlalchemy flask_login
+
 python3 app.py
