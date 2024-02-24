@@ -5,5 +5,5 @@ A sustainable app to reward an user for reducing carbon footprint, built as part
 Flask python
 
 #  steps to run
-
+pip3 install flask flask_sqlalchemy flask_login
 python3 app.py
