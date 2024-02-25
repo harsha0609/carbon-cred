@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Rewards</title>
+    <!-- Add any additional styling or links as needed -->
+</head>
+<body>
+    <h1>Your Rewards</h1>
+    {% if user_rewards %}
+        <ul>
+            {% for reward in user_rewards %}
+                <li>
+                    <h3>{{ reward.name }}</h3>
+                    <p>{{ reward.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No rewards earned yet.</p>
+    {% endif %}
+</body>
+</html>

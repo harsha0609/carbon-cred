@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Home</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar-brand img {
+            height: 40px;
+            width: auto;
+        }
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .navbar-nav .nav-link {
+            color: #495057 !important;
+            transition: color 0.3s ease-in-out;
+        }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            color: #28a745 !important; /* Green color for active/hover state */
+        }
+        .hero {
+            background-image: url("{{ url_for('static', filename='back.jpeg') }}");
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 120px 0;
+            text-shadow: 1px 1px 8px rgba(0,0,0,0.7); /* Text shadow for better readability */
+        }
+        .features, .feature-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .feature-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,.1);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px); /* More pronounced raise effect on hover */
+            box-shadow: 0 6px 12px rgba(0,0,0,.2);
+        }
+        .feature-icon {
+            font-size: 2em;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='abck.webp') }}">EcoTrack
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('donate') }}">Donate Food</a>
+                </li>
+                <li class="nav-item">
+                    <a  class="nav-link" href="{{ url_for('calculate_carbon') }}">Calculate Carbon Footprint</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('volunteering_opportunities') }}">Volunteering Opportunities</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to EcoTrack</h1>
+        <p>Empowering you to make a positive impact on the environment and community.</p>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Key Features</h2>
+        <div class="features mt-3">
+            <div class="feature-card">
+                <i class="fas fa-seedling feature-icon"></i>
+                <h3>Carbon Footprint Tracking</h3>
+                <p>Monitor and analyze your carbon emissions with detailed insights.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-utensils feature-icon"></i>
+                <h3>Food Donation</h3>
+                <p>Make a positive impact by donating surplus food to those in need.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-globe-americas feature-icon"></i>
+                <h3>Eco-Friendly Choices</h3>
+                <p>Discover how you can make more eco-friendly choices in your daily life.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-calculator feature-icon"></i>
+                <h3>Carbon Footprint Calculator</h3>
+                <p>Calculate and understand your carbon footprint to make informed decisions.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users feature-icon"></i>
+                <h3>Community Engagement</h3>
+                <p>Join a community of like-minded individuals dedicated to making a difference.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+            &copy; 2024 EcoTrack. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

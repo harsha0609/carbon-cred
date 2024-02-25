@@ -64,7 +64,7 @@
         <p><a href="{{ url_for('history') }}">View Carbon Footprint History</a></p>
         
         <h2>Calculate Carbon Footprint</h2>
-        <form action="{{ url_for('calculate') }}" method="post">
+        <form action="{{ url_for('calculate_carbon') }}" method="post">
             <label for="electricity">Electricity Usage (kWh):</label>
             <input type="number" name="electricity" required step="0.01"><br>
             

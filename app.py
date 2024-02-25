@@ -33,15 +33,18 @@ class FoodDonation(db.Model):
     donor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     donor = db.relationship('User', backref='donations', lazy=True)
 
+class VolunteeringOpportunity(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 @app.route('/')
-def index():
-    return render_template('index.html', user=current_user)
-
+def home():
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,7 +60,6 @@ def login():
             flash('Login failed. Please check your username and password.', 'danger')
     return render_template('login.html')
 
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -65,10 +67,9 @@ def logout():
     flash('Logout successful!', 'success')
     return redirect(url_for('index'))
 
-
-@app.route('/calculate', methods=['POST'])
+@app.route('/calculatecarbon', methods=['POST'])
 @login_required
-def calculate():
+def calculate_c():
     electricity = float(request.form['electricity'])
     transportation = request.form['transportation']
 
@@ -82,6 +83,7 @@ def calculate():
     }
 
     carbon_footprint = electricity * electricity_factor
+    miles = 0  # Default miles to 0 if transportation method not in dictionary
 
     if transportation in transportation_factors:
         miles = float(request.form['miles'])
@@ -102,9 +104,6 @@ def calculate():
     flash('Carbon footprint calculated and saved successfully!', 'success')
     return redirect(url_for('result'))
 
-
-
-# Donate Food Page (requires login)
 @app.route('/donate', methods=['GET', 'POST'])
 @login_required
 def donate():
@@ -124,7 +123,6 @@ def donate():
 @app.route('/result')
 @login_required
 def result():
-    # You can add additional information or processing related to the result page
     return render_template('result.html')
 
 @app.route('/history')
@@ -135,7 +133,6 @@ def history():
 
     return render_template('history.html', entries=carbon_entries)
 
-# Dashboard (requires login)
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -144,6 +141,10 @@ def dashboard():
     total_carbon_footprint = sum([entry.carbon_footprint for entry in carbon_footprints])
     return render_template('dashboard.html', carbon_footprints=carbon_footprints, donations=donations, total_carbon_footprint=total_carbon_footprint)
 
+@app.route('/calculate', methods=['GET', 'POST'])   
+@login_required
+def calculate_carbon():
+    return render_template('calculate.html', user=current_user)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -165,6 +166,26 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/volunteering_opportunities')
+@login_required
+def volunteering_opportunities():
+    opportunities = VolunteeringOpportunity.query.all()
+    return render_template('volunteering_opportunities.html', opportunities=opportunities)
+
+
+@app.route('/insert_dummy_volunteer_data')
+def insert_dummy_volunteer_data():
+    with app.app_context():
+        # Inserting dummy data
+        opportunity1 = VolunteeringOpportunity(title='Event Cleanup', description='Help clean up after the community event.')
+        opportunity2 = VolunteeringOpportunity(title='Food Drive Assistance', description='Assist in collecting and distributing donated food items.')
+        opportunity3 = VolunteeringOpportunity(title='Tree Planting', description='Join us in planting trees to promote a green environment.')
+
+        db.session.add_all([opportunity1, opportunity2, opportunity3])
+        db.session.commit()
+
+    flash('Dummy volunteering opportunities added successfully!', 'success')
+    return redirect(url_for('volunteering_opportunities'))
 
 if __name__ == '__main__':
     with app.app_context():
